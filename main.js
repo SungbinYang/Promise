@@ -56,41 +56,76 @@
 
 // test();
 
-function a(number) {
-    return new Promise((resolve, reject) => {
-        if (number > 4) {
-            reject();
-            return;
-        }
-        setTimeout(() => {
-            console.log('A');
-            resolve();
-        }, 1000)
-    });
-}
-
-// 비동기 async, await을 사용할 환경이 안되면 then() 사용할수 있다.
-// 예외처리
-// function test() {
-//     a(7).then(() => {
-//         console.log('Resolve');
-//     }).catch(() => {
-//         console.log('Reject');
-//     }).finally(() => {
-//         console.log('Done!');
+// function a(number) {
+//     return new Promise((resolve, reject) => {
+//         if (number > 4) {
+//             reject();
+//             return;
+//         }
+//         setTimeout(() => {
+//             console.log('A');
+//             resolve();
+//         }, 1000)
 //     });
 // }
 
-// 또 다른 예외처리
+// // 비동기 async, await을 사용할 환경이 안되면 then() 사용할수 있다.
+// // 예외처리
+// // function test() {
+// //     a(7).then(() => {
+// //         console.log('Resolve');
+// //     }).catch(() => {
+// //         console.log('Reject');
+// //     }).finally(() => {
+// //         console.log('Done!');
+// //     });
+// // }
+
+// // 또 다른 예외처리
+// async function test() {
+//     try {
+//         await a(8);
+//         console.log('Resolve');
+//     } catch (error) {
+//         console.log('Reject');
+//     } finally {
+//         console.log('Done!');
+//     }
+// }
+
+// test();
+
+function fetchMovies(title) {
+    // 대기(pending): 이행하거나 거부되지 않은 초기상태.
+    const OMDB_API_KEY = '7035c60c1';
+    return new Promise(async(resolve, reject) => {
+        try {
+            const res = await axios.get(`https://omdbapi.com?apikey=${OMDB_API_KEY}&s=${title}`);
+            // 이행(fulfilled): 연산이 성공적으로 완료됨.
+            resolve(res);
+        } catch (error) {
+            // 거부(rejected): 연산이 실패됨.
+            console.log(error.message);
+            reject('Sungbin?!');
+        }
+    });
+}
+
 async function test() {
     try {
-        await a(8);
-        console.log('Resolve');
-    } catch (error) {
-        console.log('Reject');
-    } finally {
-        console.log('Done!');
+        const res = await fetchMovies('avengers');
+        console.log(res);
+    } catch (sungbin) {
+        console.log(sungbin);
     }
 }
 
 test();
+
+function hello() {
+    fetchMovies('frozen').then(res => console.log(res)).catch((sungbin) => {
+        console.log(sungbin);
+    });
+}
+
+hello();
